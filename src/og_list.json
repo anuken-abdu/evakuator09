@@ -1,0 +1,78 @@
+{
+ "/": [
+  "home",
+  "Эвакуатор в Караганде"
+ ],
+ "/uslugi/": [
+  "uslugi",
+  "Услуги эвакуатора в Караганде"
+ ],
+ "/uslugi/evakuaciya-legkovyh/": [
+  "uslugi-evakuaciya-legkovyh",
+  "Легковые автомобили"
+ ],
+ "/uslugi/evakuaciya-vnedorozhnikov/": [
+  "uslugi-evakuaciya-vnedorozhnikov",
+  "Внедорожники и кроссоверы"
+ ],
+ "/uslugi/evakuaciya-posle-dtp/": [
+  "uslugi-evakuaciya-posle-dtp",
+  "Эвакуация после ДТП"
+ ],
+ "/uslugi/evakuaciya-pri-polomke/": [
+  "uslugi-evakuaciya-pri-polomke",
+  "Поломка на дороге"
+ ],
+ "/mezhgorod/": [
+  "mezhgorod",
+  "Межгород из Караганды"
+ ],
+ "/mezhgorod/karaganda-astana/": [
+  "mezhgorod-karaganda-astana",
+  "Караганда — Астана"
+ ],
+ "/mezhgorod/karaganda-almaty/": [
+  "mezhgorod-karaganda-almaty",
+  "Караганда — Алматы"
+ ],
+ "/mezhgorod/karaganda-balkhash/": [
+  "mezhgorod-karaganda-balkhash",
+  "Караганда — Балхаш"
+ ],
+ "/mezhgorod/karaganda-zhezkazgan/": [
+  "mezhgorod-karaganda-zhezkazgan",
+  "Караганда — Жезказган"
+ ],
+ "/mezhgorod/karaganda-pavlodar/": [
+  "mezhgorod-karaganda-pavlodar",
+  "Караганда — Павлодар"
+ ],
+ "/mezhgorod/karaganda-shymkent/": [
+  "mezhgorod-karaganda-shymkent",
+  "Караганда — Шымкент"
+ ],
+ "/mezhgorod/karaganda-kostanay/": [
+  "mezhgorod-karaganda-kostanay",
+  "Караганда — Костанай"
+ ],
+ "/mezhgorod/karaganda-ust-kamenogorsk/": [
+  "mezhgorod-karaganda-ust-kamenogorsk",
+  "Караганда — Усть-Каменогорск"
+ ],
+ "/temirtau/": [
+  "temirtau",
+  "Эвакуатор в Темиртау"
+ ],
+ "/voprosy/": [
+  "voprosy",
+  "Вопросы об эвакуаторе"
+ ],
+ "/kontakty/": [
+  "kontakty",
+  "Контакты"
+ ],
+ "/politika/": [
+  "politika",
+  "Политика конфиденциальности"
+ ]
+}
