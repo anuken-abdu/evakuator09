@@ -5,7 +5,7 @@ from data import *
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
-VER = "2610242350"
+VER = "2610251700"
 TODAY = datetime.date.today().isoformat()
 E = lambda s: html.escape(str(s), quote=True)
 WA_URL = lambda t=WA_TEXT: f"https://wa.me/{WA}?text=" + __import__("urllib.parse").parse.quote(t)
@@ -27,6 +27,10 @@ P = {
     "chev": '<path d="M6 9l6 6 6-6"/>',
     "up": '<path d="M12 19V5M6 11l6-6 6 6"/>',
     "list": '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01"/>',
+    "ig": '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor"/>',
+    "back": '<path d="M19 12H5M11 6l-6 6 6 6"/>',
+    "chat": '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
+    "send": '<path d="M4 12l16-8-6 16-3-7z"/>',
     "shield": '<path d="M12 3l7 3v5c0 4.6-3 8.4-7 10-4-1.6-7-5.4-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
 }
 def ic(n, cls="i"):
@@ -60,9 +64,14 @@ def footer():
 <div class="ftr-top"><a class="ftr-tel" href="tel:{TEL}" data-ev="call">{PHONE_LOCAL}</a><p>{HOURS}. Караганда, Темиртау, Карагандинская область, межгород по Казахстану.</p></div>
 <div class="ftr-g"><div class="f-col"><h4>Услуги</h4><ul>{svc}<li><a href="/mezhgorod/">Межгород</a></li></ul></div>
 <div class="f-col"><h4>Межгород</h4><ul>{rts}</ul></div>
-<div class="f-col"><h4>Сайт</h4><ul>{pages}<li><a href="{WA_URL()}" target="_blank" rel="noopener" data-ev="wa">WhatsApp</a></li></ul></div></div>
+<div class="f-col"><h4>Сайт</h4><ul>{pages}<li><a href="{WA_URL()}" target="_blank" rel="noopener" data-ev="wa">WhatsApp</a></li><li><a href="{INSTAGRAM}" target="_blank" rel="noopener">Instagram {INSTAGRAM_NICK}</a></li></ul></div></div>
 <div class="ftr-b">{logo()}<span>© {datetime.date.today().year} {BRAND}</span><a href="/politika/">Политика конфиденциальности</a><a href="{DEV_URL}" target="_blank" rel="noopener">Разработка сайта — {DEV_NAME}</a></div></div></footer>
-<div class="mbar">{cta(call_label="Позвонить")}</div>'''
+<div class="mbar">{cta(call_label="Позвонить")}</div>
+<div class="fl" aria-label="Навигация по странице"><button class="fl-b fl-back" type="button" aria-label="Назад" hidden>{ic("back")}</button><button class="fl-b fl-top" type="button" aria-label="Наверх" hidden>{ic("up")}</button><button class="fl-b fl-chat" type="button" aria-label="Задать вопрос в чате" aria-controls="chat" aria-expanded="false">{ic("chat")}<span>Вопрос</span></button></div>
+<section class="chat" id="chat" role="dialog" aria-label="Онлайн-помощник" hidden><div class="chat-h"><b>Эвакуатор <i>09</i></b><small>Онлайн-помощник · отвечает сразу</small><button class="chat-x" type="button" aria-label="Закрыть чат">{ic("close")}</button></div>
+<div class="chat-b" id="chatB" aria-live="polite"></div><div class="chat-q" id="chatQ"></div>
+<div class="chat-cta"><a href="tel:{TEL}" data-ev="call">{ic("phone")}Позвонить</a><a href="{WA_URL()}" target="_blank" rel="noopener" data-ev="wa" id="chatWa">{ic("wa")}В WhatsApp</a></div>
+<form class="chat-f" id="chatF" autocomplete="off"><label class="sr" for="chatI">Ваш вопрос</label><input id="chatI" type="text" maxlength="500" placeholder="Напишите вопрос…"><button type="submit" aria-label="Отправить">{ic("send")}</button></form></section>'''
 
 ORG = {"@context": "https://schema.org", "@type": "AutomotiveBusiness", "@id": SITE + "/#org", "name": BRAND,
        "url": SITE + "/", "telephone": PHONE, "image": SITE + "/assets/img/og/home.jpg", "logo": SITE + "/icon-512.png",
@@ -70,7 +79,7 @@ ORG = {"@context": "https://schema.org", "@type": "AutomotiveBusiness", "@id": S
        "address": {"@type": "PostalAddress", "addressLocality": "Караганда", "addressRegion": "Карагандинская область", "addressCountry": "KZ"},
        "areaServed": [{"@type": "City", "name": "Караганда"}, {"@type": "City", "name": "Темиртау"}, {"@type": "Country", "name": "Казахстан"}],
        "contactPoint": {"@type": "ContactPoint", "telephone": PHONE, "contactType": "customer service", "availableLanguage": ["ru", "kk"]},
-       "sameAs": [f"https://wa.me/{WA}"]}
+       "sameAs": [f"https://wa.me/{WA}", INSTAGRAM]}
 if WORK_24:
     ORG["openingHoursSpecification"] = {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "00:00", "closes": "23:59"}
 
@@ -97,7 +106,7 @@ def page(url, title, desc, body, cur="", ld=(), crumbs=None, og=None, og_title=N
         cr = '<nav class="crumbs" aria-label="Хлебные крошки"><ol><li><a href="/">Главная</a></li>' + "".join(
             f'<li><a href="{h}">{n}</a></li>' if i < len(crumbs) - 1 else f'<li aria-current="page">{n}</li>' for i, (h, n) in enumerate(crumbs)) + "</ol></nav>"
     body = body.replace("<!--CRUMBS-->", cr)
-    cfg = json.dumps({"ads": [GADS_ID, GADS_CALL_LABEL, GADS_WA_LABEL]})
+    cfg = json.dumps({"ads": [GADS_ID, GADS_CALL_LABEL, GADS_WA_LABEL], "tel": TEL, "phone": PHONE_LOCAL, "wa": WA, "h24": WORK_24, "hours": HOURS, "ig": INSTAGRAM, "routes": [[r[0], r[1]] for r in ROUTES]}, ensure_ascii=False)
     full = SITE + url
     return f'''<!doctype html>
 <html lang="ru"><head>
@@ -222,6 +231,7 @@ def build_misc():
     write("/voprosy/", page("/voprosy/", f"Вопросы об эвакуаторе в Караганде — {BRAND}", "Ответы на частые вопросы: как вызвать эвакуатор в Караганде, стоимость, межгород, работа ночью, вызов на трассу.", body, "/voprosy/", [ld_faq(FAQ)], crumbs=[("/voprosy/", "Вопросы")], og_title="Вопросы об эвакуаторе"))
     ct = f"""<dl class="sheet sheet-c"><div><dt>Телефон</dt><dd><a href="tel:{TEL}" data-ev="call">{PHONE_LOCAL}</a></dd></div>
 <div><dt>WhatsApp</dt><dd><a href="{WA_URL()}" target="_blank" rel="noopener" data-ev="wa">{PHONE_LOCAL}</a></dd></div>
+<div><dt>Instagram</dt><dd><a href="{INSTAGRAM}" target="_blank" rel="noopener">{INSTAGRAM_NICK}</a></dd></div>
 <div><dt>Режим работы</dt><dd>{HOURS}</dd></div><div><dt>Где работаем</dt><dd>Караганда, Темиртау, Карагандинская область; межгород — по всему Казахстану</dd></div></dl>"""
     body = f"""{ph("Контакты", "Звоните или пишите в WhatsApp. Можно сразу отправить геолокацию автомобиля.")}
 {blk("Связь", ct)}{blk("Что сказать при звонке", call_info())}{call_band()}"""
@@ -245,7 +255,7 @@ def build_meta():
     (DIST / "robots.txt").write_text("User-agent: *\nAllow: /\n\n" + "".join(f"User-agent: {b}\nAllow: /\n\n" for b in bots) + f"Sitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
     ll = [f"# {BRAND}", "", f"> {LEAD}", "", "## Главное",
           f"- Город: Караганда (Карагандинская область, Казахстан); также Темиртау и пригороды", "- Межгород: перевозка автомобилей из Караганды по всему Казахстану и обратно",
-          f"- Телефон: {PHONE_LOCAL} ({PHONE}), WhatsApp: https://wa.me/{WA}", f"- Режим работы: {HOURS}",
+          f"- Телефон: {PHONE_LOCAL} ({PHONE}), WhatsApp: https://wa.me/{WA}", f"- Instagram: {INSTAGRAM} ({INSTAGRAM_NICK})", f"- Режим работы: {HOURS}",
           "- Тип техники: эвакуатор-платформа; легковые автомобили, кроссоверы, внедорожники", "- Стоимость: зависит от расстояния, типа и состояния автомобиля; сумму называют по телефону или в WhatsApp до выезда",
           "", "## Услуги"] + [f"- [{s['short']}]({SITE}/uslugi/{s['slug']}/): {s['text']}" for s in SERVICES] + \
          [f"- [Межгород]({SITE}/mezhgorod/): из Караганды в любой город Казахстана и обратно", "", "## Направления межгорода"] + \
