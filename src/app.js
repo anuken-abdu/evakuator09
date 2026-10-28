@@ -19,9 +19,11 @@
     if (!window.gtag) return;
     var now = Date.now(); if (last[ev] && now - last[ev] < 1500) return; last[ev] = now;
     try {
-      window.gtag("event", ev === "call" ? "phone_click" : "whatsapp_click");
+      window.gtag("event", ev === "call" ? "phone_click" : "whatsapp_click", { transport_type: "beacon" });
       var label = ev === "call" ? ADS[1] : ADS[2];
-      if (ADS[0] && label) window.gtag("event", "conversion", { send_to: ADS[0] + "/" + label });
+      if (ADS[0] && label) window.gtag("event", "conversion", { send_to: ADS[0] + "/" + label, value: 1.0, currency: "USD", transport_type: "beacon" });
+      // конверсия Google Ads по событию тега Google (ads_conversion_phone_call_lead)
+      if (ev === "call") window.gtag("event", "ads_conversion_phone_call_lead", { transport_type: "beacon" });
     } catch (e) {}
   }
   document.addEventListener("click", function (e) {
